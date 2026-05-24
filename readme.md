@@ -13,6 +13,7 @@
 - Checklist of bricks already present in each set ? (excessive maybe)
 
 ## TODO 
+- [x] get webcam feed and do stuff to each image 
 - [/] Setup brickognize and test if it's reliable enough
 - [ ] Setup brickset matching to results 
 - [ ] set identification from input database

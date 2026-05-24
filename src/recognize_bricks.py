@@ -1,6 +1,6 @@
 import os
 import requests
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 def identify_lego_brick_from_image(image_path):
     # https://www.reddit.com/r/learnpython/comments/11pa4gz/brickognize_api/
@@ -23,7 +23,7 @@ def identify_lego_brick_from_image(image_path):
 
 
 def remove_identified_bricks_from_image(image_path, result):
-    pad_frac = .2# max = .5
+    pad_frac = .2 # max = .5
     im = Image.open(image_path)
     width = int(result['bounding_box']['image_width'])
     height = int(result['bounding_box']['image_height'])
@@ -72,13 +72,48 @@ def find_bricks(image_path):
     return results
 
 
-def show_bricks_found():
+def show_bricks_found(results, image_path):
     """
     TODO
     Show the bricks found in the image by writing their name, id and location on the image.
     Part of the GUI to be done
     """
+    im = Image.open(image_path)
+    im = im.resize((
+        int(results[0]['bounding_box']['image_width']), 
+        int(results[0]['bounding_box']['image_height'])
+    ))
+    draw = ImageDraw.Draw(im)
 
-    x_mid = (result['bounding_box']['left'] + result['bounding_box']['right'])/2
-    y_mid = (result['bounding_box']['upper'] + result['bounding_box']['lower'])/2
-    draw.text((x_mid, y_mid), result['items'][0]["id"]+' '+result['items'][0]["name"], fill=(255, 255, 255))
+    
+    pad = 8
+    for result in results[1:]:
+        draw.rectangle(
+            (
+                result['bounding_box']['left'], 
+                result['bounding_box']['upper'], 
+                result['bounding_box']['right'], 
+                result['bounding_box']['lower']
+            ), 
+            outline=(255, 0, 0), width=5, fill=None
+        )
+
+        text_format = {
+            'align': 'center', 
+            'anchor': 'ms',
+            'fill': (255, 255, 255), 
+            'stroke_width': 3, 
+            'stroke_fill':(0, 0, 0), 
+        }
+
+        draw.text(
+            ((result['bounding_box']['left'] + result['bounding_box']['right'])/2, result['bounding_box']['upper']-pad), 
+            f"{result['items'][0]['id']}", 
+            font=ImageFont.truetype("../assets/arial.ttf", size=24), **text_format)
+        
+        draw.text(
+            ((result['bounding_box']['left'] + result['bounding_box']['right'])/2, result['bounding_box']['lower']-pad), 
+            f"{result['items'][0]['name']}", 
+            font=ImageFont.truetype("../assets/arial.ttf", size=12), **text_format)
+    Image._show(im)
+    # return im
