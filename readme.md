@@ -12,9 +12,15 @@
 - Edge cases: false positives, wrong identification and a brick belonging to multiple sets ? 
 - Checklist of bricks already present in each set ? (excessive maybe)
 
+
+## Dependancies
+- opencv2 (webcam feed)
+- numpy (cv2 array image to PIL)
+
 ## TODO 
 - [x] get webcam feed and do stuff to each image 
 - [/] Setup brickognize and test if it's reliable enough
+- [/] live testing
 - [ ] Setup brickset matching to results 
 - [ ] set identification from input database
 - [ ] Build the set database

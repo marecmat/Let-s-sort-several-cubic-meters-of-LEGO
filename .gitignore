@@ -1,5 +1,7 @@
+*.gitignore
 *.DS_Store
 */temp/*
+*/tmp/*
 __pycache__/
 *.pyc
 *.pyo

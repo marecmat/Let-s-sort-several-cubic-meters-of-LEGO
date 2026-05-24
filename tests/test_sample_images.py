@@ -6,7 +6,7 @@ import numpy as np
 
 
 # image_path = 'img_test_lib/s-l1200.png'
-image_path = 'img_test_lib/test_pic2.jpeg'
+image_path = 'img_test_lib/s-l1200.png'
 if True:
     start = time.time()
     results = find_bricks(image_path)

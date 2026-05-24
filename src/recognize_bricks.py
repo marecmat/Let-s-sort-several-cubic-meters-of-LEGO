@@ -1,15 +1,27 @@
 import os
+from io import BytesIO
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
 def identify_lego_brick_from_image(image_path):
     # https://www.reddit.com/r/learnpython/comments/11pa4gz/brickognize_api/
     url = 'https://api.brickognize.com/predict/'
-    with open(image_path, 'rb') as file:
-        response = requests.post(
-            url, 
-            headers={'accept': 'application/json'}, 
-            files={'query_image': (image_path, file, 'image/jpeg')})
+    # if isinstance(image_path, Image.Image):
+    #     file = BytesIO()
+    #     image_path.save(file, format='JPEG')
+    #     file.seek(0)  # Rewind to the start of the stream
+    #     response = requests.post(url, headers={'accept': 'application/json'}, 
+    #         files={'query_image': (image_path, file, 'image/jpeg')}
+    #     )
+
+    if type(image_path) == str:
+        with open(image_path, 'rb') as file:
+            response = requests.post(
+                url, 
+                headers={'accept': 'application/json'}, 
+                files={'query_image': (image_path, file, 'image/jpeg')}
+                
+            )
 
     if response.status_code == 200:
         return response.json()
@@ -115,5 +127,18 @@ def show_bricks_found(results, image_path):
             ((result['bounding_box']['left'] + result['bounding_box']['right'])/2, result['bounding_box']['lower']-pad), 
             f"{result['items'][0]['name']}", 
             font=ImageFont.truetype("../assets/arial.ttf", size=12), **text_format)
-    Image._show(im)
-    # return im
+    # Image._show(im)
+    return im
+
+def get_brick_feed(image_path):
+    results = find_bricks(image_path)
+    for r in results:
+        print(f"found {r['items'][0]['id']}\tname: {r['items'][0]['name']}")
+
+    if len(results) > 0:
+        im = show_bricks_found(results, image_path)
+        return im
+
+    else:
+        im = Image.open(image_path)
+        return im
