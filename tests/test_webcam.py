@@ -1,7 +1,5 @@
 import sys
 sys.path.extend(['./src/', '../src/'])
-from main import webcam_feed
-
-
+from webcam_handling import webcam_feed
 
 webcam_feed()
