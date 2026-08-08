@@ -32,8 +32,6 @@ def identify_lego_brick_from_image(image_path):
             'details': response.text
         }
 
-
-
 def remove_identified_bricks_from_image(image_path, result):
     pad_frac = .2 # max = .5
     im = Image.open(image_path)
@@ -54,8 +52,6 @@ def remove_identified_bricks_from_image(image_path, result):
     )
 
     return im
-
-
 
 def find_bricks(image_path):
     i = 0
@@ -82,7 +78,6 @@ def find_bricks(image_path):
             results.append(result)
             id_stored.append(result['items'][0]['id'])    
     return results
-
 
 def show_bricks_found(results, image_path):
     """
@@ -142,3 +137,10 @@ def get_brick_feed(image_path):
     else:
         im = Image.open(image_path)
         return im
+
+
+if __name__ == "__main__":
+    import json
+    IMAGE = "./tmp/webcam_capture.jpg"
+    result = identify_lego_brick_from_image(IMAGE)
+    print(json.dumps(result, indent=2))

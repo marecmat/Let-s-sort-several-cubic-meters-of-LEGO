@@ -37,3 +37,6 @@ def webcam_feed():
 
     destroyWindow(window_name)
     vc.release()
+
+if __name__ == "__main__":
+    webcam_feed()

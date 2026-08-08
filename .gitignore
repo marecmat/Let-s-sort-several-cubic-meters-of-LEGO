@@ -9,3 +9,5 @@ __pycache__/
 *.log
 *.bak
 *.swp
+config.py
+lego_db.json
